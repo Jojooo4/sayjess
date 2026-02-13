@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Valentine's Day 💜</title>
+    <style>
+        /* --- CSS STYLING --- */
+        :root {
+            --primary: #9b59b6; 
+            --dark: #2e003e;
+            --light: #f3e5f5;
+            --accent: #ff6b81;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a0025 0%, #4a148c 100%);
+            color: var(--light);
+            overflow: hidden; /* Mencegah scroll */
+            display: flex; justify-content: center; align-items: center;
+            touch-action: manipulation; /* Optimasi sentuhan HP */
+        }
+
+        /* --- BACKGROUND --- */
+        #bg-container, .page-bg-anim {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; overflow: hidden; pointer-events: none;
+        }
+
+        .floating-item {
+            position: absolute; opacity: 0.4; animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- KARTU UTAMA (Disesuaikan untuk HP) --- */
+        #app {
+            position: relative; z-index: 100;
+            width: 85%; /* Lebih lebar di HP */
+            max-width: 450px;
+            background: rgba(40, 0, 60, 0.85);
+            padding: 25px; 
+            border-radius: 20px;
+            border: 2px solid rgba(155, 89, 182, 0.5);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            text-align: center;
+        }
+
+        /* --- KARAKTER BESAR (RESPONSIF) --- */
+        .walking-char {
+            position: fixed; bottom: -5px; z-index: 200;
+            cursor: pointer; 
+            width: 150px; /* Ukuran default (Laptop) */
+            transition: transform 0.2s;
+            pointer-events: auto; /* Agar bisa diklik di HP */
+        }
+        
+        /* KHUSUS HP: Karakter lebih kecil */
+        @media (max-width: 600px) {
+            .walking-char {
+                width: 90px; /* Mengecil di HP */
+                bottom: 10px;
+            }
+            h1 { font-size: 1.8rem; } /* Font Judul mengecil */
+            p { font-size: 0.95rem; }
+        }
+
+        #panda-walk { animation: walkRight 20s linear infinite; }
+        #icebear-walk { animation: walkLeft 25s linear infinite; bottom: 5px; }
+
+        @keyframes walkRight { 0% { left: -200px; transform: scaleX(1); } 100% { left: 100%; transform: scaleX(1); } }
+        @keyframes walkLeft { 0% { right: -200px; transform: scaleX(-1); } 100% { right: 100%; transform: scaleX(-1); } }
+        
+        .walking-char:active { transform: scale(1.2); }
+
+        /* --- SLIDESHOW FOTO --- */
+        .photo-frame {
+            width: 100%; 
+            height: 280px; /* Tinggi Laptop */
+            background-color: #000;
+            border-radius: 15px; margin-bottom: 15px;
+            border: 3px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            overflow: hidden; 
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            animation: pulse-border 2s infinite;
+        }
+
+        /* KHUSUS HP: Frame foto lebih pendek */
+        @media (max-width: 600px) {
+            .photo-frame { height: 220px; }
+        }
+
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 107, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 129, 0); }
+        }
+        
+        #slide-img {
+            width: 100%; height: 100%; object-fit: cover; 
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* --- ANIMASI --- */
+        .fade-in-up { animation: fadeInUp 1s ease-out forwards; opacity: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section { display: none; opacity: 0; transition: opacity 0.5s; }
+        .active { display: block; opacity: 1; }
+        
+        h1 { color: #e056fd; text-shadow: 2px 2px 0px #000; margin-bottom: 10px; }
+        
+        .btn {
+            background: linear-gradient(45deg, #8e44ad, #ff6b81);
+            border: none; padding: 12px 25px; color: white;
+            font-size: 1rem; border-radius: 50px; cursor: pointer;
+            font-weight: bold; margin-top: 10px; 
+            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+            -webkit-tap-highlight-color: transparent; /* Hapus kotak biru saat klik di Android */
+        }
+        .btn:active { transform: scale(0.95); }
+
+        .love-pop {
+            position: absolute; font-size: 2rem; animation: popUp 1s ease-out forwards; pointer-events: none; z-index: 300;
+        }
+        @keyframes popUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-100px); opacity: 0; } }
+        
+        .typing-area {
+            background: rgba(255,255,255,0.1); padding: 15px;
+            border-radius: 10px; text-align: left;
+            min-height: 80px; font-style: italic; border-left: 4px solid #ff6b81;
+            font-size: 0.9rem;
+        }
+
+        /* PARTIKEL HATI */
+        .heart-particle {
+            position: absolute; color: var(--accent); opacity: 0;
+            animation: floatUpRotate var(--duration) linear infinite;
+        }
+        @keyframes floatUpRotate {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+
+        .character-bg {
+            position: absolute; width: 50px; z-index: 50; opacity: 0.8;
+            animation: wander 10s infinite alternate ease-in-out;
+        }
+        @keyframes wander { 0% { transform: translate(0,0); } 100% { transform: translate(20px, 20px); } }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="bg-container"></div>
+    <div class="page-bg-anim" id="page2-bg"></div>
+
+    <img src="https://cdn-icons-png.flaticon.com/512/3769/3769039.png" class="character-bg" style="top: 10%; left: 5%;" onclick="spawnHeart(event)">
+    <img src="https://cdn-icons-png.flaticon.com/512/2360/2360879.png" class="character-bg" style="top: 85%; right: 5%;" onclick="spawnHeart(event)">
+
+    <img src="icebear.gif" id="icebear-walk" class="walking-char" onclick="spawnHeart(event)" onerror="this.style.display='none'">
+    
+    <div id="app">
+        <div id="page1" class="section active">
+            <h1>Hai Sayang! 🐼❄️</h1>
+            <p>Welcome to our little world.</p>
+            <p>Ada Panda lewat di bawah tuh!</p>  
+            <button class="btn" onclick="startJourney()">Mulai Petualangan 🚀</button>
+        </div>
+
+        <div id="page2" class="section">
+            <h2 class="fade-in-up" style="animation-delay: 0.2s;">Momen Kita 📸</h2>
+            <div class="photo-frame fade-in-up" style="animation-delay: 0.5s;">
+                <img id="slide-img" src="" alt="Foto Kenangan">
+            </div>
+            <p class="fade-in-up" style="animation-delay: 0.8s;">Setiap foto punya cerita indah bersamamu.</p>
+            <button class="btn fade-in-up" style="animation-delay: 1s;" onclick="nextPage(2, 3)">Lanjut 👉</button>
+        </div>
+
+        <div id="page3" class="section">
+            <h2>Kenapa Kamu? 💜</h2>
+            <div style="text-align: left; padding: 0 10px;">
+                <p>🐼 Lucu kayak Panda.</p>
+                <p>❄️ Bikin tenang kayak Ice Bear.</p>
+                <p>✨ Segalanya buat aku.</p>
+            </div>
+            <button class="btn" onclick="nextPage(3, 4)">Baca Suratku 💌</button>
+        </div>
+
+        <div id="page4" class="section">
+            <h2>Dear, Sayang...</h2>
+            <div class="typing-area">
+                <span id="typing-text"></span><span style="animation: blink 1s infinite">|</span>
+            </div>
+            <br>
+            <button class="btn" id="btnEnd" style="display:none" onclick="nextPage(4, 5)">Terakhir 🥰</button>
+        </div>
+
+        <div id="page5" class="section">
+            <h1>Happy Valentine!</h1>
+            <div style="font-size: 3rem; margin: 15px;">💜🐼❄️</div>
+            <p>Semoga suka sama surprise ini ya!</p>
+            <button class="btn" onclick="sendWa()">Kirim Pesan ke Aku 💬</button>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA USER ---
+        const noHP = "6285142225479"; 
+        const pesanKetik = "Selamat hari kasih sayang! Terima kasih sudah menjadi partner terbaikku. Sama seperti Panda dan Ice Bear yang selalu bareng, aku harap kita juga terus bareng ya. I love you to the moon and back! 💜";
+
+        // --- DAFTAR FOTO (Format .jpeg sesuai screenshot) ---
+        const fotoKalian = [
+            "gambar.jpeg", 
+            "gambar1.jpeg", 
+            "gambar2.jpeg",
+            "gambar3.jpeg",
+            "gambar4.jpeg",
+            "gambar5.jpeg",
+            "gambar6.jpeg",
+            "gambar7.jpeg",
+            "gambar8.jpeg",
+            "gambar9.jpeg"
+        ];
+
+        // --- LOGIC ---
+        function spawnHeart(e) {
+            const heart = document.createElement('div');
+            heart.innerText = "💜"; heart.classList.add('love-pop');
+            // Support touch event coordinate
+            let x = e.clientX || e.touches[0].clientX;
+            let y = e.clientY || e.touches[0].clientY;
+            
+            heart.style.left = x + 'px'; heart.style.top = y + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1000);
+        }
+
+        const bgContainer = document.getElementById('bg-container');
+        const emojis = ['🐼', '❄️', '💜', '✨']; 
+        function spawnItem() {
+            const el = document.createElement('div');
+            el.classList.add('floating-item');
+            el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (Math.random() * 20 + 15) + 'px'; // Ukuran disesuaikan mobile
+            el.style.animationDuration = (Math.random() * 10 + 5) + 's';
+            bgContainer.appendChild(el);
+            setTimeout(() => { el.remove() }, 15000);
+        }
+        setInterval(spawnItem, 500);
+
+        // Animasi Page 2
+        let page2AnimInterval;
+        function createPage2Animations() {
+            const container = document.getElementById('page2-bg');
+            container.style.display = 'block';
+            page2AnimInterval = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-particle');
+                heart.innerText = Math.random() > 0.5 ? "💖" : "✨";
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                heart.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300); 
+        }
+
+        function clearPageAnimations() {
+            clearInterval(page2AnimInterval);
+            document.getElementById('page2-bg').innerHTML = '';
+            document.getElementById('page2-bg').style.display = 'none';
+        }
+
+        function startJourney() {
+            var audio = document.getElementById('bgMusic');
+            audio.play().catch(e => console.log("Audio play error"));
+            nextPage(1, 2);
+            startSlideshow();
+        }
+
+        function nextPage(hideIdx, showIdx) {
+            const hideEl = document.getElementById(`page${hideIdx}`);
+            const showEl = document.getElementById(`page${showIdx}`);
+            
+            if (hideIdx === 2) clearPageAnimations();
+
+            hideEl.style.opacity = 0;
+            setTimeout(() => {
+                hideEl.style.display = 'none';
+                showEl.style.display = 'block';
+                setTimeout(() => { 
+                    showEl.classList.add('active'); 
+                    if (showIdx === 2) createPage2Animations();
+                }, 50);
+            }, 500);
+            if(showIdx === 4) setTimeout(typeWriter, 1000);
+        }
+
+        function startSlideshow() {
+            let i = 0;
+            const imgElement = document.getElementById('slide-img');
+            imgElement.src = fotoKalian[0];
+            setInterval(() => {
+                i = (i + 1) % fotoKalian.length;
+                imgElement.style.opacity = 0;
+                setTimeout(() => {
+                    imgElement.src = fotoKalian[i];
+                    imgElement.style.opacity = 1;
+                }, 500); 
+            }, 3000); 
+        }
+
+        let charIndex = 0;
+        function typeWriter() {
+            if (charIndex < pesanKetik.length) {
+                document.getElementById("typing-text").innerHTML += pesanKetik.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, 50);
+            } else {
+                document.getElementById('btnEnd').style.display = 'inline-block';
+            }
+        }
+
+        function sendWa() {
+            const text = "Hai! Websitenya lucu banget, ada panda sama ice bearnya jalan-jalan! Makasih ya sayang 💜";
+            window.location.href = `https://wa.me/${noHP}?text=${encodeURIComponent(text)}`;
+        }
+    </script>
+</body>
+</html>
